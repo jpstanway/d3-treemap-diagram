@@ -1,5 +1,5 @@
 // API url
-const gamesURL = 'https://cdn.rawgit.com/freeCodeCamp/testable-projects-fcc/a80ce8f9/src/data/tree_map/video-game-sales-data.json';
+const URL = 'https://cdn.rawgit.com/freeCodeCamp/testable-projects-fcc/a80ce8f9/src/data/tree_map/video-game-sales-data.json';
 
 // retrieve data
 const promise = new Promise((resolve, reject) => {
@@ -9,32 +9,40 @@ const promise = new Promise((resolve, reject) => {
 });
 
 promise.then((data) => {
-    
+
     // svg + legend dimensions
     const width = 1080;
     const height = 600;
-    const padding = 30;
 
     // create svg area
     const svg = d3.select('#container')
                   .append('svg')
                   .attr('width', width)
-                  .attr('height', height);
+                  .attr('height', height);     
+                  
+    // create treemap layout
+    const treemap = d3.treemap()
+                      .size([width, height]);              
 
-    // set up x and y scales
-    const xScale = d3.scaleLinear()
-                     .domain([0, 100])
-                     .range([padding, width - padding]);
-                     
-    const yScale = d3.scaleLinear()
-                     .domain([0, 10])
-                     .range([padding, height - padding]);                 
+    // create root node
+    const root = d3.hierarchy(data)
+                   .sum((d) => d.value)
+                   .sort((a, b) => b.height - a.height || b.value - a.value);              
 
-    // create rects representing the data
-    svg.selectAll('rect')
-       .data(data)
-       .enter()
-       .append('rect')
-       .attr('width', 50)
-       .attr('height', 50);
+    // pass root node into treemap
+    treemap(root);
+
+    // create and place a g element for each group of data
+    const cell = svg.selectAll('.cell')
+                    .data(root.leaves())
+                    .enter()
+                    .append('g')
+                    .attr('class', 'cell')
+                    .attr('transform', (d) => `translate(${d.x0}, ${d.y0})`);
+    
+    // append a rect to each cell and calculate the dimensions                
+    cell.append('rect')
+        .attr('class', 'tile')
+        .attr('width', (d) => d.x1 - d.x0)
+        .attr('height', (d) => d.y1 - d.y0);     
 });

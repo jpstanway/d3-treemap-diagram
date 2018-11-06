@@ -1,2 +1,7 @@
 #container {
   text-align: center; }
+
+#tooltip {
+  text-align: center; }
+  #tooltip h3, #tooltip p {
+    margin: 0; }

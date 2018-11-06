@@ -36,11 +36,25 @@ promise.then((data) => {
         "2600": "#777777"
     }; 
 
+    // create the tooltip for each rect element
+    const tip = d3.tip()
+                  .attr('id', 'tooltip')
+                  .attr('class', 'd3-tip')
+                  .html((d) => {
+                      d3.select('#tooltip').attr('data-value', d.data.value);
+
+                      return `
+                        <h3>${d.data.name} (${d.data.category})</h3>
+                        <p>${d.data.value} units sold</p>
+                      `;
+                  });
+
     // create svg area
     const svg = d3.select('#container')
                   .append('svg')
                   .attr('width', width)
-                  .attr('height', height);     
+                  .attr('height', height)
+                  .call(tip);     
                   
     // create treemap layout
     const treemap = d3.treemap()
@@ -67,8 +81,11 @@ promise.then((data) => {
         .attr('class', 'tile')
         .attr('width', (d) => d.x1 - d.x0)
         .attr('height', (d) => d.y1 - d.y0)
+        .attr('data-name', (d) => d.data.name)
+        .attr('data-category', (d) => d.data.category)
+        .attr('data-value', (d) => d.data.value)
         .style('fill', (d) => consoleColors[d.data.category])
-        .style('stroke', 'black');
-
-
+        .style('stroke', 'black')
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
 });

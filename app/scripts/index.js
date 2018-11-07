@@ -74,7 +74,7 @@ promise.then((data) => {
                     .enter()
                     .append('g')
                     .attr('class', 'cell')
-                    .attr('transform', (d) => `translate(${d.x0}, ${d.y0})`);
+                    .attr('transform', (d) => `translate(${d.x0}, ${d.y0})`);             
     
     // append a rect to each cell and calculate the dimensions                
     cell.append('rect')
@@ -88,4 +88,12 @@ promise.then((data) => {
         .style('stroke', 'black')
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
+
+    // create and append text to each tile    
+    cell.append('text')
+        .attr('class', 'tile-text')
+        .attr('transform', 'translate(5, 15)')
+        .attr('width', (d) => d.x1 - d.x0)
+        .style('fill', 'white')
+        .text((d) => `${d.data.name} (${d.data.value} units)`);
 });

@@ -1,11 +1,38 @@
-#container {
+#container, #legend {
     text-align: center;
+}
+
+#legend {
+    max-width: 1080px;
+    margin: auto;
+}
+
+#title {
+    margin-bottom: 0;
+}
+
+#description {
+    margin-top: 0;
+    font-style: italic;
 }
 
 #tooltip {
     text-align: center;
+    color: darken(#fff, 10%);
+    background-color: #027e77;
+    border: 1px solid darken(#fff, 15%);
 
     h3, p {
         margin: 0;
     }
+}
+
+.tile {
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.tile-text {
+    pointer-events: none;
 }

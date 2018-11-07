@@ -31,8 +31,8 @@ promise.then((data) => {
         "PS": "#c4bfde",
         "XOne": "#436635",
         "X360": "#87CC69",
-        "XB": "#e0f2da",
-        "PC": "#efefef",
+        "XB": "#aadd9f",
+        "PC": "#c2c2c2",
         "2600": "#777777"
     }; 
 
@@ -40,6 +40,15 @@ promise.then((data) => {
     const tip = d3.tip()
                   .attr('id', 'tooltip')
                   .attr('class', 'd3-tip')
+                  .direction((d) => {
+                      if(d.data.category === 'Wii' || d.data.category === 'DS') {
+                        return 'se';
+                      } else if (d.data.category === 'X360' || d.data.category === 'GB' || d.data.category === 'PS3') {
+                        return 's';  
+                      } else {
+                        return 'sw';
+                      }
+                  })
                   .html((d) => {
                       d3.select('#tooltip').attr('data-value', d.data.value);
 
@@ -93,7 +102,37 @@ promise.then((data) => {
     cell.append('text')
         .attr('class', 'tile-text')
         .attr('transform', 'translate(5, 15)')
-        .attr('width', (d) => d.x1 - d.x0)
         .style('fill', 'white')
         .text((d) => `${d.data.name} (${d.data.value} units)`);
+
+    // create legend and legend dimensions
+    const legendWidth = 'auto';
+    const legendHeight = 'auto';
+    const categories = Object.keys(consoleColors);
+
+    const legend = d3.select('#legend')
+                     .append('svg')
+                     .attr('width', legendWidth)
+                     .attr('height', legendHeight)
+                     .style('margin', '5% 10%');
+
+    legend.selectAll('rect')
+          .data(categories)
+          .enter()
+          .append('rect')
+          .attr('class', 'legend-item')
+          .attr('x', (d, i) => i * 50)
+          .attr('y', 0)
+          .attr('width', 20)
+          .attr('height', 20)
+          .style('fill', (d) => consoleColors[d])
+          .style('stroke', 'black');
+          
+    legend.selectAll('text')
+          .data(categories)
+          .enter()
+          .append('text')
+          .attr('transform', (d, i) => `translate(${i * 50}, 35)`)
+          .style('fill', 'black')
+          .text((d) => d);
 });

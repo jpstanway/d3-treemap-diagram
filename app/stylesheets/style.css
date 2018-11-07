@@ -1,7 +1,27 @@
-#container {
+#container, #legend {
   text-align: center; }
 
+#legend {
+  max-width: 1080px;
+  margin: auto; }
+
+#title {
+  margin-bottom: 0; }
+
+#description {
+  margin-top: 0;
+  font-style: italic; }
+
 #tooltip {
-  text-align: center; }
+  text-align: center;
+  color: #e6e6e6;
+  background-color: #027e77;
+  border: 1px solid #d9d9d9; }
   #tooltip h3, #tooltip p {
     margin: 0; }
+
+.tile:hover {
+  opacity: 0.8; }
+
+.tile-text {
+  pointer-events: none; }

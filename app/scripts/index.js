@@ -42,11 +42,9 @@ promise.then((data) => {
                   .attr('class', 'd3-tip')
                   .direction((d) => {
                       if(d.data.category === 'Wii' || d.data.category === 'DS') {
-                        return 'se';
-                      } else if (d.data.category === 'X360' || d.data.category === 'GB' || d.data.category === 'PS3') {
-                        return 's';  
+                        return 'ne';
                       } else {
-                        return 'sw';
+                        return 'nw';
                       }
                   })
                   .html((d) => {
@@ -106,22 +104,26 @@ promise.then((data) => {
         .text((d) => `${d.data.name} (${d.data.value} units)`);
 
     // create legend and legend dimensions
-    const legendWidth = 'auto';
-    const legendHeight = 'auto';
+    const legendWidth = 960;
+    const legendHeight = 50;
+    const legendPadding = 20;
     const categories = Object.keys(consoleColors);
 
     const legend = d3.select('#legend')
                      .append('svg')
                      .attr('width', legendWidth)
-                     .attr('height', legendHeight)
-                     .style('margin', '5% 10%');
+                     .attr('height', legendHeight);
+
+    const legendAxis = d3.scaleLinear()
+                         .domain([0, categories.length])
+                         .range([legendPadding, legendWidth - legendPadding]);                 
 
     legend.selectAll('rect')
           .data(categories)
           .enter()
           .append('rect')
           .attr('class', 'legend-item')
-          .attr('x', (d, i) => i * 50)
+          .attr('x', (d, i) => legendAxis(i))
           .attr('y', 0)
           .attr('width', 20)
           .attr('height', 20)
@@ -132,7 +134,9 @@ promise.then((data) => {
           .data(categories)
           .enter()
           .append('text')
-          .attr('transform', (d, i) => `translate(${i * 50}, 35)`)
+          .attr('class', 'legend-text')
+          .attr('x', (d, i) => legendAxis(i))
+          .attr('y', 40)
           .style('fill', 'black')
           .text((d) => d);
 });

@@ -1,20 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Space+Mono:400,700');
+
+body {
+    font-family: 'Roboto', 'Arial', sans-serif;
+    background-color: #eee;
+}
+
 #container, #legend {
     text-align: center;
 }
 
-#legend {
-    max-width: 1080px;
+#container {
+    width: 1080px;
+    height: auto;
+    padding: 20px;
     margin: auto;
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: 0px 0px 2px black;
 }
 
-#title {
-    margin-bottom: 0;
+#header {
+    font-family: 'Space Mono', monospace;
+
+    #title {
+        margin: 0;
+    }
+    
+    #description {
+        margin-top: 0;
+    }
 }
 
-#description {
-    margin-top: 0;
-    font-style: italic;
+#legend {
+    margin: 30px auto;
+    width: 960px;
+    height: 50px;
 }
+
+
 
 #tooltip {
     text-align: center;
@@ -24,6 +47,10 @@
 
     h3, p {
         margin: 0;
+    }
+
+    p {
+        color: darken(#fff, 5%);
     }
 }
 
@@ -35,4 +62,9 @@
 
 .tile-text {
     pointer-events: none;
+    font-size: 0.8em;
+}
+
+.legend-text {
+    font-weight: bold;
 }
